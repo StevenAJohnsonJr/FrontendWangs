@@ -2,18 +2,23 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { clientCredentials } from './client';
 
+const url= "https://localhost:7033"
+
 const checkUser = (uid) => new Promise((resolve, reject) => {
-  fetch(`${clientCredentials.databaseURL}/checkuser`, {
-    method: 'POST',
-    body: JSON.stringify({
-      uid,
-    }),
+  fetch(`${url}/checkuser/${uid}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
     },
   })
-    .then((resp) => resolve(resp.json()))
+    .then(async (res) => {
+      let data;
+      if (res.ok) {
+        data = await res.json();
+        resolve(data);
+      }
+    })
     .catch(reject);
 });
 
