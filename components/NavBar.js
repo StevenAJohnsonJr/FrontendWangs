@@ -23,6 +23,12 @@ export default function NavBar() {
             <Link passHref href="/">
               <Nav.Link>Home</Nav.Link>
             </Link>
+            <Link className="ps-relative" passHref href="/new">
+              <Nav.Link className="nav-topic">Create Item</Nav.Link>
+            </Link>
+            <Link className="ps-relative" passHref href="/items/itemsPage">
+              <Nav.Link className="nav-topic">Menu</Nav.Link>
+            </Link>
             <Link passHref href="/delete-me">
               <Nav.Link>Delete Me</Nav.Link>
             </Link>
