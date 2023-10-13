@@ -29,6 +29,9 @@ export default function NavBar() {
             <Link className="ps-relative" passHref href="/items/itemsPage">
               <Nav.Link className="nav-topic">Menu</Nav.Link>
             </Link>
+            <Link className="ps-relative" passHref href="/orders/ordersPage">
+              <Nav.Link className="nav-topic">Orders</Nav.Link>
+            </Link>
             <Link passHref href="/delete-me">
               <Nav.Link>Delete Me</Nav.Link>
             </Link>
