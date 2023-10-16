@@ -55,8 +55,10 @@ function OrderCard({ OrderObj }) {
         <h5>Customer's Name: {OrderObj?.customerName}</h5>
         <h5>Customer's Name: {OrderObj?.orderDateFormatted}</h5>
         <h5>Meal Number : {OrderObj?.orderId}</h5>
+        <h5>Payment Amount: {OrderObj?.orderPrice}</h5>
         <h5>Payment Option: {OrderObj?.paymentsId}</h5>
         <h5>Tip Amount: ${OrderObj?.tip}</h5>
+        <h5>Total Amount: ${OrderObj?.totalRev}</h5>
         <h5>Ready to be processed{OrderObj?.like ? <span>👍</span> : null}</h5>
         <button type="button" variant="danger" className="btn btn-outline-secondary" onClick={deleteThisOrder}>
           Delete
@@ -83,6 +85,8 @@ OrderCard.propTypes = {
     customerName: PropTypes.string,
     paymentsId: PropTypes.number,
     tip: PropTypes.number,
+    totalRev: PropTypes.number,
+    orderPrice: PropTypes.number,
     like: PropTypes.bool,
     orderDateFormatted: PropTypes.string,
   }).isRequired,

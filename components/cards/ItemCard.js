@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React from 'react';
+import Link from 'next/link';
 import PropTypes from 'prop-types';
 import Card from 'react-bootstrap/Card';
 
@@ -32,6 +33,14 @@ function ItemCard({ ItemObj }) {
         <h5>{ItemObj?.itemDescription}</h5>
         <h5>{ItemObj?.price}</h5>
       </div>
+      <Link href={`/items/${ItemObj.id}`} passHref>
+          <button variant="primary" className="btn btn-outline-secondary">
+            Details
+          </button>
+        </Link>
+      <Link href={`/items/edit/${ItemObj.id}`} passHref>
+            <button variant="info">EDIT</button>
+          </Link>
     </Card>
   );
 }

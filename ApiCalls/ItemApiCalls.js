@@ -70,10 +70,53 @@ const createItem = (payload) => new Promise((resolve, reject) => {
         'Content-Type': 'application/json',
       },
     })
-      .then((response) => response.json())
-      .then((data) => resolve(Object.values(data)))
+      .then((response) => {
+        if (!response.ok) {
+          reject(`Network response was not ok: ${response.status} ${response.statusText}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+
+  const getItemsById2 = (id) => new Promise((resolve, reject) => {
+    fetch(`${endpoint}/apiitemsbyID/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then((response) => resolve(response.json()))
+      // .then((data) => resolve(Object.values(data)))
       .catch(reject);
   });
+  
+  // const getItemsById2 = (id) => {
+  //   return new Promise((resolve, reject) => {
+  //     fetch(`${endpoint}/api/itemsbyID/${id}`, {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Accept: 'application/json',
+  //       },
+  //     })
+  //       .then((response) => {
+  //         if (!response.ok) {
+  //           reject(`Network response was not ok: ${response.status} ${response.statusText}`);
+  //         }
+  //         return response.json();
+  //       })
+  //       .then((data) => resolve(data))
+  //       .catch((error) => reject(error));
+  //   });
+  // };
+  
 
   const getItemsByOrderId = (orderid) => new Promise((resolve, reject) => {
     fetch(`${endpoint}/api/item/${orderid}`, {
@@ -106,5 +149,6 @@ const createItem = (payload) => new Promise((resolve, reject) => {
     getAllItems,
     deleteItem,
     getItemsById,
+    getItemsById2,
     checkUser,
   };

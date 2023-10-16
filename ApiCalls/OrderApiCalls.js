@@ -71,8 +71,8 @@ const createOrder = (payload) => new Promise((resolve, reject) => {
         Accept: 'application/json',
       },
     })
-      .then((response) => response.json())
-      .then((data) => resolve(Object.values(data)))
+      .then((response) => resolve(response.json()))
+      // .then((data) => resolve(Object.values(data)))
       .catch(reject);
   });
 
