@@ -1,12 +1,11 @@
 /* eslint-disable */
-import React, { useState } from 'react'; // Import useState
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 import Card from 'react-bootstrap/Card';
 import { deleteOrder } from '../../ApiCalls/OrderApiCalls';
 
 function OrderCard({ OrderObj }) {
-
   const [clickCount, setClickCount] = useState(0);
   const [status, setStatus] = useState('Not Started');
 
@@ -37,24 +36,25 @@ function OrderCard({ OrderObj }) {
   };
 
   return (
-    <Card className="e-card e-card-3d" style={{
-      display: 'flex',
-      flexDirection: 'column',
-      width: '16rem',
-      height: '100%',
-      // margin: '20%',
-      marginBottom: '1.5px',
-      border: 'none', // Remove the default card border
-      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)', // Apply a box shadow for the 3D effect
-      transition: 'box-shadow 0.3s ease-in-out', // Add a transition for the shadow
-    }}
-    onMouseEnter={(e) => e.currentTarget.style.boxShadow = '0px 0px 15px rgba(0, 0, 0, 0.5)'} // Shadow effect on hover
-    onMouseLeave={(e) => e.currentTarget.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.3)'} // Reset shadow on mouse leave
+    <Card
+      className="e-card e-card-3d"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '16rem',
+        padding: '16px', // Add padding for spacing inside the card
+        border: 'none',
+        boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
+        transition: 'box-shadow 0.3s ease-in-out',
+        cursor: 'pointer', // Add a pointer cursor for hover effect
+      }}
+      onMouseEnter={(e) => (e.currentTarget.style.boxShadow = '0px 0px 15px rgba(0, 0, 0, 0.5)')}
+      onMouseLeave={(e) => (e.currentTarget.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.3)')}
     >
-      <div>
+      <div className="card-container">
         <h5>Customer's Name: {OrderObj?.customerName}</h5>
-        <h5>Customer's Name: {OrderObj?.orderDateFormatted}</h5>
-        <h5>Meal Number : {OrderObj?.orderId}</h5>
+        <h5>Order Date: {OrderObj?.orderDateFormatted}</h5>
+        <h5>Meal Number: {OrderObj?.orderId}</h5>
         <h5>Payment Amount: {OrderObj?.orderPrice}</h5>
         <h5>Payment Option: {OrderObj?.paymentsId}</h5>
         <h5>Tip Amount: ${OrderObj?.tip}</h5>
@@ -68,8 +68,10 @@ function OrderCard({ OrderObj }) {
             Details
           </button>
         </Link>
-        <Link href={`/api/OrdersbyID/${OrderObj.id}`} passHref>
-        <button variant="primary" className="btn btn-outline-secondary">Edit</button>
+        <Link href={`/orders/edit/${OrderObj.id}`} passHref>
+          <button variant="primary" className="btn btn-outline-secondary">
+            Edit
+          </button>
         </Link>
         <button type="button" className="btn btn-outline-secondary" style={{ backgroundColor: buttonColor }} onClick={handleClick}>
           {status}

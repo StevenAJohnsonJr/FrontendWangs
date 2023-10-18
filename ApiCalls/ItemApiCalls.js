@@ -21,8 +21,8 @@ const createItem = (payload) => new Promise((resolve, reject) => {
       .catch(reject);
   });
   
-  const updateItem = (payload) => new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/item${payload.id}.json`, {
+  const updateItem = (Id, payload) => new Promise((resolve, reject) => {
+    fetch(`${endpoint}/item${Id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
@@ -38,6 +38,21 @@ const createItem = (payload) => new Promise((resolve, reject) => {
       })
       .catch(reject);
   });
+
+  // const updateItem = (Id, payload) => new Promise((resolve, reject) => {
+  //   fetch(`https://localhost:7011/api/Items/${Id}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify(payload),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => resolve(data))
+  //     .catch(reject);
+  // });
+
+  
 
   const getAllItems = () => new Promise((resolve, reject) => {
     fetch(`${endpoint}/item`, {
@@ -64,7 +79,7 @@ const createItem = (payload) => new Promise((resolve, reject) => {
   });
 
   const getItemsById = (id) => new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/item/${id}`, {
+    fetch(`${endpoint}/item/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

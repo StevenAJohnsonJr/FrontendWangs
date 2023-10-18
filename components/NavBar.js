@@ -35,9 +35,9 @@ export default function NavBar() {
             <Link className="ps-relative" passHref href="/orders/new">
               <Nav.Link className="nav-topic">Create Order</Nav.Link>
             </Link>
-            <Link passHref href="/delete-me">
+            {/* <Link passHref href="/delete-me">
               <Nav.Link>Delete Me</Nav.Link>
-            </Link>
+            </Link> */}
             <Button variant="danger" onClick={signOut}>
               Sign Out
             </Button>

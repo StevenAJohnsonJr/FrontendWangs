@@ -20,3 +20,35 @@ a {
 body {
   background-color: #0de077;
 }
+
+/* Focused effect */
+.form-control:focus {
+  background-color: #e0e0e0; /* Change to the desired focus color */
+  transition: background-color 0.3s;
+}
+
+/* Add this CSS to your stylesheet */
+.card {
+  background-color: #fff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-hover:hover {
+  transform: translate(0, -5px);
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: bold;
+  transition: color 0.3s;
+}
+
+.page-title:hover {
+  color: #ff7f50; /* Change the color to the desired hover color */
+}
+

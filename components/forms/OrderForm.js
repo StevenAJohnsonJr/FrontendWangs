@@ -1,108 +1,166 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { FloatingLabel, Form, Button } from 'react-bootstrap';
-import { createOrder } from '../../ApiCalls/OrderApiCalls';
+import { useRouter } from 'next/router';
+import PropTypes from 'prop-types';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
+import { useAuth } from '../../utils/context/authContext';
 import { getAllItems } from '../../ApiCalls/ItemApiCalls';
-import { getAllPayments } from '../../ApiCalls/PaymentApiCalls';
+import { createOrder, updateOrder } from '../../ApiCalls/OrderApiCalls';
 
-function OrderForm() {
-  const [formData, setFormData] = useState({});
-  const [itemList, setItemList] = useState([]);
-  const [paymentList, setPaymentList] = useState([]);
+const initialState = {
+  customerName: '',
+  orderId: '',
+  paymentId: '',
+
+  isOpen: false,
+  orderPrice: '',
+  totalRev: '',
+  tip: 0,
+  id: null,
+};
+
+function OrderForm({ obj }) {
+  const [formInput, setFormInput] = useState(initialState);
+  const [items, setItems] = useState([]);
+  const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
-    getAllPayments().then((data) => setPaymentList(data));
-  }, []);
-  console.warn(paymentList);
+    getAllItems(user.uid).then(setItems);
 
-  useEffect(() => {
-    getAllItems().then((data) => setItemList(data));
-  }, []);
+    if (obj.id) setFormInput(obj);
+  }, [obj, user]);
 
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormInput((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  
+const handleSubmit = (e) => {
+  e.preventDefault();
+  if (obj.id > 0) {
+    updateOrder(formInput)
+      .then(() => {
+        router.push(`/orders/${obj.id}`);
+        console.log(formInput); // Move the console.log here
+      });
+  } else {
+    const payload = { ...formInput, uid: user.uid };
+    console.log(payload); // Keep the console.log here
+    createOrder(payload);
+  }
+};
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const payload = { ...formData };
-        createOrder(payload);
-    };
 
-    if (itemList === null) {
-        return <div>Loading...</div>;
-    }
+  return (
+    <Form onSubmit={handleSubmit}>
+      <h2 className="text-white mt-5">{obj.id ? 'Update' : 'Create'} Order</h2>
 
-    if (paymentList === null) {
-        return <div>Loading...</div>;
-    }
+      {/* TITLE INPUT  */}
+      <FloatingLabel controlId="floatingInput1" label="Please Enter New Customer's Name" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="CustomerName"
+          name="customerName"
+          value={formInput.customerName}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
 
-    return (
-        <Form onSubmit={handleSubmit}>
-            <FloatingLabel controlId="floatingInput" label="Enter Customer's Full Name">
-                <Form.Control type="textarea" name="CustomerName" required onChange={handleChange} />
-            </FloatingLabel>
-            <FloatingLabel controlId="floatingInput" label="Per Today's Date">
-                <Form.Control type="textarea" name="OrderDate" required onChange={handleChange} />
-            </FloatingLabel>
-            <Form.Select
-                aria-label="Item"
-                name="itemName"
-                onChange={handleChange}
-                className="mb-3"
-                value={formData.itemName}
-                required
-            >
-                <option value="ItemName" key="ItemName">
-                    Select an Item
-                </option>
-                {itemList.map((item) => (
-                    <option key={item.id} value={item.itemName}>
-                        {item.itemName}
-                    </option>
-                ))}
-            </Form.Select>
-            <FloatingLabel controlId="floatingInput" label="Please Enter HP&W Meal #">
-                <Form.Control type="textarea" name="OrderId" required onChange={handleChange} />
-            </FloatingLabel>
+      {/* IMAGE INPUT  */}
+      <FloatingLabel controlId="floatingInput2" label="Please Enter Correct OrderId #" className="mb-3">
+        <Form.Control
+          type="text"
+          placeholder="OrderId"
+          name="orderId"
+          value={formInput.orderId}
+          onChange={handleChange}
+          required
+        />
+      </FloatingLabel>
 
-            <FloatingLabel controlId="floatingInput" label="The Cost For This Meal">
-                <Form.Control type="textarea" name="OrderPrice" required onChange={handleChange} />
-            </FloatingLabel>
+      {/* PRICE INPUT  */}
+       <FloatingLabel controlId="floatingInput3" label="Enter Payment Method#" className="mb-3">
+        <Form.Control
+          type="number"
+          placeholder="PaymentId"
+          name="paymentId"
+          value={formInput.paymentId}
+          onChange={handleChange}
+        //   required
+        />
+      </FloatingLabel> 
 
-            <FloatingLabel controlId="floatingInput" label="Tip Amount">
-                <Form.Control type="textarea" name="Tip" required onChange={handleChange} />
-            </FloatingLabel>
+      <FloatingLabel controlId="floatingInput3" label="Order Price" className="mb-3">
+        <Form.Control
+          type="number"
+          placeholder="OrderPrice"
+          name="orderPrice"
+          value={formInput.orderPrice}
+          onChange={handleChange}
+        />
+      </FloatingLabel>
 
-            <FloatingLabel controlId="floatingInput" label="Total For This Order">
-                <Form.Control type="textarea" name="TotalRev" required onChange={handleChange} />
-            </FloatingLabel>
+      <FloatingLabel controlId="floatingInput3" label="Order Tip" className="mb-3">
+        <Form.Control
+          type="number"
+          placeholder="Tip"
+          name="tip"
+          value={formInput.tip}
+          onChange={handleChange}
+        />
+      </FloatingLabel>
 
-            <Form.Select
-                aria-label="Payment"
-                name="paymentMethod"  // Corrected typo here
-                onChange={handleChange}
-                className="mb-3"
-                value={formData.paymentMethod}
-                required
-            >
-                <option value="PaymentMethod" key="PaymentMethod">
-                    Select a Payment Method
-                </option>
-                {paymentList.map((payment) => (
-                    <option key={payment.id} value={payment.paymentMethod}>
-                        {payment.paymentMethod}
-                    </option>
-                ))}
-            </Form.Select>
+      <FloatingLabel controlId="floatingInput3" label="Total For this Order" className="mb-3">
+        <Form.Control
+          type="number"
+          placeholder="totalRev"
+          name="totalRev"
+          value={formInput.totalRev}
+          onChange={handleChange}
+        />
+      </FloatingLabel>
 
-            <Button variant="primary" type="submit">
-                Submit
-            </Button>
-        </Form>
-    );
+      <Form.Check
+        type="switch"
+        id="custom-switch"
+        label="Check this switch"
+        onChange={() => {
+          // eslint-disable-next-line no-param-reassign
+          obj.isOpen = !obj.isOpen;
+          console.log(obj.isOpen);
+        }}
+      />
+
+      {/* SUBMIT BUTTON  */}
+      <Button type="submit">{obj.id ? 'Update' : 'Create'} Order</Button>
+    </Form>
+  );
 }
 
-export default OrderForm;
+OrderForm.propTypes = {
+  obj: PropTypes.shape({
+    customerName: PropTypes.string,
+    orderId: PropTypes.number,
+    // orderDate: PropTypes.string,
+    isOpen: PropTypes.bool,
+    orderPrice: PropTypes.number,
+    paymentId: PropTypes.string,
+    like: PropTypes.bool,
+    tip: PropTypes.number,
+    totalRev: PropTypes.number,
+    id: PropTypes.number,
+  }),
+};
 
+OrderForm.defaultProps = {
+  obj: initialState,
+};
+
+export default OrderForm;

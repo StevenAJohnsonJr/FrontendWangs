@@ -25,8 +25,9 @@ const orderIdStyle = {
 };
 
 function ItemCard({ ItemObj }) {
+  
   return (
-    <Card className="e-card e-card-3d" style={cardStyle}>
+    <Card className="card-container" style={cardStyle}>
       <div style={orderIdStyle}>{ItemObj?.orderId}</div>
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <h5>{ItemObj?.itemName}</h5>

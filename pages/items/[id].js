@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { getItemsById2 } from '../../ApiCalls/ItemApiCalls';
+import { getItemsById } from '../../ApiCalls/ItemApiCalls';
 
 export default function itemDetails() {
   const router = useRouter();
@@ -13,7 +13,7 @@ export default function itemDetails() {
 
   // TODO: make call to API layer to get the data
   useEffect(() => {
-    getItemsById2 (id).then(setItemDetails);
+    getItemsById(id).then(setItemDetails);
     console.warn('my item', itemDetails);
   }, [id]);
 
