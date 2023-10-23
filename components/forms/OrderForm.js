@@ -13,7 +13,6 @@ const initialState = {
   customerName: '',
   orderId: '',
   paymentId: '',
-
   isOpen: false,
   orderPrice: '',
   totalRev: '',
@@ -40,28 +39,24 @@ function OrderForm({ obj }) {
       [name]: value,
     }));
   };
-  
-const handleSubmit = (e) => {
-  e.preventDefault();
-  if (obj.id > 0) {
-    updateOrder(formInput)
-      .then(() => {
-        router.push(`/orders/${obj.id}`);
-        console.log(formInput); // Move the console.log here
-      });
-  } else {
-    const payload = { ...formInput, uid: user.uid };
-    console.log(payload); // Keep the console.log here
-    createOrder(payload);
-  }
-};
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (obj.id > 0) {
+      updateOrder(obj.id, formInput)
+        .then(() => {
+          router.push(`/orders/${obj.id}`);
+        });
+    } else {
+      const payload = { ...formInput, uid: user.uid };
+      createOrder(payload);
+    }
+  };
 
   return (
     <Form onSubmit={handleSubmit}>
       <h2 className="text-white mt-5">{obj.id ? 'Update' : 'Create'} Order</h2>
 
-      {/* TITLE INPUT  */}
       <FloatingLabel controlId="floatingInput1" label="Please Enter New Customer's Name" className="mb-3">
         <Form.Control
           type="text"
@@ -73,10 +68,9 @@ const handleSubmit = (e) => {
         />
       </FloatingLabel>
 
-      {/* IMAGE INPUT  */}
       <FloatingLabel controlId="floatingInput2" label="Please Enter Correct OrderId #" className="mb-3">
         <Form.Control
-          type="text"
+          type="number"
           placeholder="OrderId"
           name="orderId"
           value={formInput.orderId}
@@ -85,19 +79,17 @@ const handleSubmit = (e) => {
         />
       </FloatingLabel>
 
-      {/* PRICE INPUT  */}
-       <FloatingLabel controlId="floatingInput3" label="Enter Payment Method#" className="mb-3">
+      <FloatingLabel controlId="floatingInput3" label="Enter Payment Method#" className="mb-3">
         <Form.Control
           type="number"
           placeholder="PaymentId"
           name="paymentId"
           value={formInput.paymentId}
           onChange={handleChange}
-        //   required
         />
-      </FloatingLabel> 
+      </FloatingLabel>
 
-      <FloatingLabel controlId="floatingInput3" label="Order Price" className="mb-3">
+      <FloatingLabel controlId="floatingInput4" label="Order Price" className="mb-3">
         <Form.Control
           type="number"
           placeholder="OrderPrice"
@@ -107,7 +99,7 @@ const handleSubmit = (e) => {
         />
       </FloatingLabel>
 
-      <FloatingLabel controlId="floatingInput3" label="Order Tip" className="mb-3">
+      <FloatingLabel controlId="floatingInput5" label="Order Tip" className="mb-3">
         <Form.Control
           type="number"
           placeholder="Tip"
@@ -117,7 +109,7 @@ const handleSubmit = (e) => {
         />
       </FloatingLabel>
 
-      <FloatingLabel controlId="floatingInput3" label="Total For this Order" className="mb-3">
+      <FloatingLabel controlId="floatingInput6" label="Total For this Order" className="mb-3">
         <Form.Control
           type="number"
           placeholder="totalRev"
@@ -132,13 +124,13 @@ const handleSubmit = (e) => {
         id="custom-switch"
         label="Check this switch"
         onChange={() => {
-          // eslint-disable-next-line no-param-reassign
-          obj.isOpen = !obj.isOpen;
-          console.log(obj.isOpen);
+          setFormInput((prevInput) => ({
+            ...prevInput,
+            isOpen: !prevInput.isOpen,
+          }));
         }}
       />
 
-      {/* SUBMIT BUTTON  */}
       <Button type="submit">{obj.id ? 'Update' : 'Create'} Order</Button>
     </Form>
   );
@@ -148,11 +140,9 @@ OrderForm.propTypes = {
   obj: PropTypes.shape({
     customerName: PropTypes.string,
     orderId: PropTypes.number,
-    // orderDate: PropTypes.string,
+    paymentId: PropTypes.number,
     isOpen: PropTypes.bool,
     orderPrice: PropTypes.number,
-    paymentId: PropTypes.string,
-    like: PropTypes.bool,
     tip: PropTypes.number,
     totalRev: PropTypes.number,
     id: PropTypes.number,

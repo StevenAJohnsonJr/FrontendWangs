@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { getOrdersById } from '../../ApiCalls/OrderApiCalls';
 
@@ -28,6 +29,10 @@ export default function orderDetails() {
                 {orderDetails.customerName} will be using payment method #{orderDetails.paymentsId}.
               </p>
               <p style={{ marginButton: '100px' }}>{orderDetails.customerName} has left a tip in the amount of: {orderDetails.tip}</p>
+              <p>
+                {' '}
+                To proceed to the Revenue Page Click This Button<Link href="/revenue/revenuePage" passHref><button variant="primary" className="m-2">Revenue</button></Link>
+                </p>
               <h5></h5>
             </div>
           </div>

@@ -40,7 +40,7 @@ function ItemCard({ ItemObj }) {
           </button>
         </Link>
       <Link href={`/items/edit/${ItemObj.id}`} passHref>
-            <button variant="info">EDIT</button>
+            <button className="btn btn-outline-secondary" variant="info">EDIT</button>
           </Link>
     </Card>
   );

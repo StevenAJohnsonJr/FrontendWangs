@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
-import { createItem, getAllItems } from '../../ApiCalls/ItemApiCalls.js';
+import { createItem, getAllItems, updateItem } from '../../ApiCalls/ItemApiCalls.js';
 import { useAuth } from '../../utils/context/authContext';
 
 const initialState = {
@@ -39,8 +39,8 @@ function ItemForm({ itemObj, orderId }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (itemObj > 0) {
-      updateItem(formInput)
+    if (itemObj.id > 0) {
+      updateItem(itemObj.id, formInput)
         .then(() => router.push(`/items/${itemObj.id}`));
     } else {
       const payload = { ...formInput, uid: user.uid };
