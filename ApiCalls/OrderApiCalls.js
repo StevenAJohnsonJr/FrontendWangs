@@ -21,21 +21,15 @@ const createOrder = (payload) => new Promise((resolve, reject) => {
       .catch(reject);
   });
   
-  const updateOrder = (payload) => new Promise((resolve, reject) => {
-    fetch(`${endpoint}/api/order${payload.id}.json`, {
-      method: 'PATCH',
+  const updateOrder = (id, payload) => new Promise((resolve, reject) => {
+    fetch(`${endpoint}/api/order/${id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     })
-      .then(async (res) => {
-        let data;
-        if (res.ok) {
-          data = await res.json();
-          resolve(data);
-        }
-      })
+   .then(resolve)
       .catch(reject);
   });
 
@@ -51,6 +45,33 @@ const createOrder = (payload) => new Promise((resolve, reject) => {
       .then((data) => resolve(Object.values(data)))
       .catch(reject);
   });
+
+  // const getClosedOrders = () => new Promise((resolve, reject) => {
+  //   fetch(`${endpoint}/isclosedOrders`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Accept: 'application/json',
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => resolve(Object.values(data)))
+  //     .catch(reject);
+  // });
+
+  const getClosedOrders = () => new Promise((resolve, reject) => {
+    fetch(`${endpoint}/isclosedOrders`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => resolve(Object.values(data)))
+      .catch(reject);
+  });
+  
 
   const deleteOrder = (id) => new Promise((resolve, reject) => {
     fetch(`${endpoint}/api/order/${id}`, {
@@ -82,4 +103,5 @@ const createOrder = (payload) => new Promise((resolve, reject) => {
     getOrdersById,
     getAllOrders,
     deleteOrder,
+    getClosedOrders,
   };

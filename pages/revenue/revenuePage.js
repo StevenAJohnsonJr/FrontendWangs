@@ -1,10 +1,11 @@
 /* eslint-disable */
 import React, { useState } from 'react';
-import { getAllClosedOrders, getAllTotals } from '../../ApiCalls/RevenueApiCalls';
+import { getAllClosedOrders, getAllMissing, getAllTotals } from '../../ApiCalls/RevenueApiCalls';
 
 function RevenuePage() {
   const [closedOrdersRevenue, setClosedOrdersRevenue] = useState(null);
   const [allMoney, setAllMoney] = useState(null);
+  const [missingMoney, setMissingMoney] = useState(null);
 
   const getClosedOrdersRevenue = () => {
     getAllClosedOrders().then((revenue) => setClosedOrdersRevenue(revenue));
@@ -12,6 +13,16 @@ function RevenuePage() {
 
   const getAllMoney = () => {
     getAllTotals().then((revenue) => setAllMoney(revenue));
+  };
+
+  const getMissingMoney = () => {
+    getAllMissing().then((revenue) => setMissingMoney(revenue));
+  };
+
+  const resetPage = () => {
+    setClosedOrdersRevenue(null);
+    setAllMoney(null);
+    setMissingMoney(null);
   };
 
   return (
@@ -39,11 +50,27 @@ function RevenuePage() {
             <p>Click to see what we were supposed to have made today.</p>
           )}
           <button className="btn btn-outline-secondary" onClick={getAllMoney}>
-            Get Revenue from All Orders
+            Get Revenue Missing From Remaining Open Orders
           </button>
           <div><p>If these two numbers don't match, then we have a problem.</p></div>
         </div>
+
+        <div className="card card-hover">
+          {missingMoney !== null ? (
+            <p>Total Missing Revenue from All Orders: ${missingMoney}</p>
+          ) : (
+            <p>Click to see how much we're missing today.</p>
+          )}
+          <button className="btn btn-outline-secondary" onClick={getMissingMoney}>
+            Get Revenue from All Orders
+          </button>
+          <div><p>If This Number Is Not 0 Stop Talking AND GET MY MONEY!!</p></div>
+        </div>
       </div>
+
+      <button className="btn btn-primary" onClick={resetPage}>
+        Reset Page
+      </button>
     </div>
   );
 }

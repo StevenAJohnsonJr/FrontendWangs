@@ -22,20 +22,15 @@ const createItem = (payload) => new Promise((resolve, reject) => {
   });
   
   const updateItem = (Id, payload) => new Promise((resolve, reject) => {
-    fetch(`${endpoint}/item${Id}`, {
-      method: 'PATCH',
+    fetch(`${endpoint}/item/${Id}`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
     })
-      .then(async (res) => {
-        let data;
-        if (res.ok) {
-          data = await res.json();
-          resolve(data);
-        }
-      })
+      .then(resolve)
+     
       .catch(reject);
   });
 

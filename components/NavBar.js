@@ -32,6 +32,9 @@ export default function NavBar() {
             <Link className="ps-relative" passHref href="/orders/ordersPage">
               <Nav.Link className="nav-topic">Orders</Nav.Link>
             </Link>
+            <Link className="ps-relative" passHref href="/orders/closedOrders/closedOrderPage">
+              <Nav.Link className="nav-topic">Closed Orders</Nav.Link>
+            </Link>
             <Link className="ps-relative" passHref href="/orders/new">
               <Nav.Link className="nav-topic">Create Order</Nav.Link>
             </Link>
